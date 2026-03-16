@@ -1,0 +1,5 @@
+add_executable(UnitTests main.cpp)
+target_compile_options(UnitTests PRIVATE -Wno-address-of-packed-member)
+target_link_libraries(UnitTests PRIVATE SimpleUdp mavlink gtest gtest_main gmock gmock_main)
+target_include_directories(UnitTests PRIVATE ${CMAKE_SOURCE_DIR})
+add_dependencies(UnitTests generate_c_headers)

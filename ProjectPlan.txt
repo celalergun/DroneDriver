@@ -1,0 +1,73 @@
+ProjectPlan.txt
+
+# Asynchronous Drone Client-Server
+
+### Description
+
+The goal of this task is to create a UDP client-server application to demonstrate candidate’s ability to design high-performance error resilient asynchronous communication protocols over an unreliable connection. The communication must go through a proxy UDP bridge which can simulate extreme packet drop scenarios.
+
+Main criteria is ensuring control over the simulated drone over 75% packet drop scenario, without application crashing or experiencing freezing, failing to do so would lead to a catastrophic failure and loss of vehicle.
+
+It is expected that all application specifications below are met.
+
+### Application Specifications
+
+- Design a UDP-server (Ground Control Station) and UDP-client (Drone) communication architecture.
+- Communication protocol must use MAVLink2 [library referenced below].
+- Drone and GCS communication must be unit-tested.
+- **Drone** - stores and simulates very limited state [keep it simple]:
+    - 3D state: Local X, Y, Alt. Speed(m/s) and Heading(degrees).
+    - Status: MAV_MODE (GUIDED_DISARMED, GUIDED_ARMED, AUTO_ARMED). Drone can start as GUIDED_ARMED. When following mission, should switch to AUTO_ARMED.
+    - Accept mission commands: SET_POSITION_TARGET_GLOBAL_INT and MAV_CMD_OVERRIDE_GOTO [DO_HOLD]. To move the drone and hold position respectively. Set position target is acked by POSITION_TARGET_GLOBAL_INT, where as Hold position command is acked by Mavlink COMMAND_ACK message.
+    - Telemetry stream: reports all current drone status at 10Hz using appropriate MAVLink messages: HEARTBEAT, LOCAL_POSITION_NED [X,Y], GLOBAL_POSITION_INT [Alt,Speed,Heading].
+    - Accepts commands from GCS (server), simulates the drone moving around [keep it simple].
+    - MAVLink communication should not block the simulation thread. Simulation Thread should be the main startup thread.
+- **GCS** - accepts Drone connection and visualizes it on a simple debug GUI
+    - Display connection status [Connected/Disconnected] and connection quality (%).
+    - Display all drone telemetry: X, Y, Alt, Speed, Heading, MAV_MODE.
+    - Allow controlling the drone by sending SET_POSITION_TARGET_GLOBAL_INT, MAV_CMD_OVERRIDE_GOTO commands. Commands must be ACK-ed.
+    - Visualize the current drone position (top-down 2D) and its current goto target / mission (waypoints) with Dear ImGui [library referenced below]
+    - MAVLink communication should not block the main GUI thread. GUI Thread should be the main startup thread.
+- **Proxy** - a simple UDP bypass proxy that performs packet drops
+    - Main goal is to simulate packet drop.
+    - Data rate must be artificially limited to 32KB/s [matches a certain type of radio system]. Any packets beyond this rate should be dropped. Proxy{radio} should have an artificially limited buffer of 1024 bytes, packets that don’t fit the buffer will be dropped.
+    - Packets should simulate a delay of: `packetDelay = packetLen * timePerByte` since this will expose certain types of “bug scenarios” in the GCS application.
+    - Should be part of GCS application, but implemented with sockets. This way packet drop configuration is simplified.
+    - Bonus: enable/disable packet dropping % with a slider in GCS UI
+- **General Technical requirements**
+    - A drone go-to command or hold-position command must always succeed, up to 2 second of delay is allowed. Proper retry and ack mechanism should be used.
+    - Access between main thread and communication thread must be thread-safe.
+    - Ports can be pre-configured or automatically assigned. Port-in-use error should be a critical error.
+    - Unit Tests must include a stress test with 75% packet loss case.
+
+### Additional Requirements
+
+- Language: Modern C++20/23
+- Build system: CMake *(if using Visual Studio, then VS CMake project)*
+- Compiler: G++ or MSVC++
+- Platform: Ubuntu or Windows
+- Testing: Google Test, must cover all communication patterns between Client and Server
+- Libraries: should be included with source code or as git submodules in `libs/` to reduce package management problems across platforms. See example CMakeLists.txt to see which libraries are expected from source.
+
+### Assessment criteria
+
+- Readability of the code and well designed build process with documentation + README - project must be easy to understand and test run, with understandable log output (20p)
+- Existing unit tests that cover both Server and Client - to ensure baseline quality (20p)
+- Application error resilience to packet loss - without user noticing (20p)
+- Quality of C++ code and resource management - without leaks and properly structured (20p)
+- Multi-threaded application architecture design - to showcase technical skills (20p)
+
+In the case of critical crashes, the assignment is failed. The test assignment is successful if the approximate score is above 60p/100p (rounded up).
+
+### Expected completion time
+
+Up to 2 weeks. The assignment should be approached with a minimalist approach, focusing on the baseline technical requirements. Any additional time should be spent on perfecting the code and solution to represent the best technical skills.
+
+### Libraries
+
+- MAVLink documentation: https://mavlink.io/en/messages/common.html
+- MAVLink C bindings: https://github.com/mavlink/c_library_v2 - autogenerated C headers to pack/unpack byte streams into MAVLink message structs
+- Networking library: https://github.com/RedFox20/SimpleUDP - however, using POSIX sockets or other network libraries is also accepted.
+- Google Test: https://github.com/google/googletest
+- Dear ImGui: https://github.com/ocornut/imgui
+

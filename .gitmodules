@@ -1,0 +1,18 @@
+[submodule "libs/SimpleUDP"]
+	path = libs/SimpleUDP
+	url = https://github.com/RedFox20/SimpleUDP
+[submodule "libs/c_library_v2"]
+	path = libs/c_library_v2
+	url = https://github.com/mavlink/c_library_v2
+[submodule "libs/glfw"]
+	path = libs/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "libs/googletest"]
+	path = libs/googletest
+	url = https://github.com/google/googletest
+[submodule "libs/imgui"]
+	path = libs/imgui
+	url = https://github.com/ocornut/imgui
+[submodule "libs/mavlink"]
+	path = libs/mavlink
+	url = https://github.com/mavlink/mavlink.git

@@ -1,0 +1,10 @@
+#ifndef DRONE_STATUS_H
+#define DRONE_STATUS_H
+#include <mavlink/common/mavlink.h>
+
+enum class DroneStatus {
+    MAV_MODE_GUIDED_DISARMED = MAV_MODE_GUIDED_DISARMED,
+    MAV_MODE_GUIDED_ARMED = MAV_MODE_GUIDED_ARMED,
+    MAV_MODE_AUTO_ARMED = MAV_MODE_AUTO_ARMED
+};
+#endif // DRONE_STATUS_H
