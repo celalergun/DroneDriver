@@ -1,10 +1,10 @@
-# Asynchronous Drone Client-Server (KrattAssignment)
+# Asynchronous Drone Client-Server
 
 A UDP client-server application demonstrating high-performance, error-resilient asynchronous communication between a simulated drone and a ground control station (GCS). Communication passes through a proxy UDP bridge that simulates extreme packet drop scenarios (up to 75%+), ensuring reliable drone control over an unreliable link.
 
 ## Table of Contents
 
-- [Asynchronous Drone Client-Server (KrattAssignment)](#asynchronous-drone-client-server-krattassignment)
+- [Asynchronous Drone Client-Server 
   - [Table of Contents](#table-of-contents)
   - [Architecture](#architecture)
   - [Components](#components)
@@ -183,7 +183,7 @@ cd build/Drone
 ## Project Structure
 
 ```
-KrattAssignment/
+Drone/
 ├── CMakeLists.txt              # Root build configuration
 ├── compile.sh                  # Clean build script
 ├── README.md
