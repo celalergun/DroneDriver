@@ -2,6 +2,12 @@
 
 A UDP client-server application demonstrating high-performance, error-resilient asynchronous communication between a simulated drone and a ground control station (GCS). Communication passes through a proxy UDP bridge that simulates extreme packet drop scenarios (up to 75%+), ensuring reliable drone control over an unreliable link.
 
+## Screenshots
+
+![Drone Simulator](Screenshot_DroneSim.png)
+
+![Ground Control UI](Screenshot_GUI.png)
+
 ## Table of Contents
 
 - [Asynchronous Drone Client-Server 
@@ -116,7 +122,7 @@ On Ubuntu, install dependencies:
 
 ```bash
 sudo apt update
-sudo apt install build-essential cmake libglfw3-dev libgl1-mesa-dev python3
+sudo apt install build-essential cmake libglfw3-dev libgl1-mesa-dev python3 libxkbcommon-dev libxcursor-dev
 ```
 
 ## Building
