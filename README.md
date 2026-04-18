@@ -10,7 +10,8 @@ A UDP client-server application demonstrating high-performance, error-resilient 
 
 ## Table of Contents
 
-- [Asynchronous Drone Client-Server 
+- [Asynchronous Drone Client-Server](#asynchronous-drone-client-server)
+  - [Screenshots](#screenshots)
   - [Table of Contents](#table-of-contents)
   - [Architecture](#architecture)
   - [Components](#components)
